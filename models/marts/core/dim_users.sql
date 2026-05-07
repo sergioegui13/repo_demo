@@ -52,6 +52,7 @@ final as (
         , u.updated_at_utc                                   as last_updated_at_utc
         , datediff('day', u.created_at_utc, current_timestamp()) as days_since_registration
         , u.date_load
+        , 1 AS NEW_COLUMN
     from users u
     left join addresses a on u.address_id = a.address_id
 
