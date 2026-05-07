@@ -19,6 +19,7 @@ final as (
         , state
         , country
         , date_load
+        , 1 as NEW_COLUMN
     from addresses
 
 )
