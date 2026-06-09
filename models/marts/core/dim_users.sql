@@ -45,13 +45,14 @@ final as (
         , u.phone_number
         , u.address_id
         , a.address_line
-        , a.zipcode::varchar(20) as zipcode
+        , a.zipcode::varchar(20) as zipcode_02
         , a.state
         , a.country
         , u.created_at_utc                                   as registered_at_utc
         , u.updated_at_utc                                   as last_updated_at_utc
         , datediff('day', u.created_at_utc, current_timestamp()) as days_since_registration
         , u.date_load
+        , 1 as demo_error
     from users u
     left join addresses a on u.address_id = a.address_id
 
