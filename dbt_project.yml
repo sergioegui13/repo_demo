@@ -100,7 +100,7 @@ models:
     marts:
       +materialized: table
       +database: "SERGIOEGUI_{{ env_var('DBT_ENVIRONMENTS', 'FAIL') }}_GOLD_DB"
-
+      
       core:
         +schema: core
 

@@ -156,8 +156,12 @@ models:
       - name: address_id
         description: "PK del address."
         data_tests:
-          - unique
-          - not_null
+          - unique:
+              config:
+                store_failures: true
+          - not_null:
+              config:
+                store_failures: true
 
   # --------------------------------------------------------------------------
   # dim_dates

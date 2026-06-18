@@ -58,4 +58,4 @@ final as (
 
 )
 
-select * from final
+select *, 1 as demo_error from final
