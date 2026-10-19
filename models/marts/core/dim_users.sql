@@ -58,5 +58,5 @@ final as (
 )
 
 select *
---, 1 as demo_error --Prueba contracts
+, 1 as demo_error --Prueba contracts
 from final
