@@ -20,7 +20,7 @@ sources:
       e-commerce (SQL Server). Replicados a Snowflake mediante Fivetran.
 
     schema: sql_server_dbo
-    database: "SERGIOEGUI_{{ env_var('DBT_ENVIRONMENTS', 'FAIL') }}_BRONZE_DB"
+    database: "MESH_{{ env_var('DBT_ENVIRONMENTS', 'FAIL') }}_BRONZE_DB"
 
     quoting:
       database: false

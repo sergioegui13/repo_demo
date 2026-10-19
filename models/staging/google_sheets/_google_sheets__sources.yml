@@ -26,7 +26,7 @@ sources:
     # `env_var` permite que el source apunte a la BD correcta según el entorno
     # (DEV, PRO, ...). El segundo argumento ('FAIL') es el valor por defecto
     # si la variable no existe — así detectamos errores de configuración rápido.
-    database: "SERGIOEGUI_{{ env_var('DBT_ENVIRONMENTS', 'FAIL') }}_BRONZE_DB"
+    database: "MESH_{{ env_var('DBT_ENVIRONMENTS', 'FAIL') }}_BRONZE_DB"
 
     # Snowflake no necesita quoting; lo desactivamos explícitamente para
     # evitar problemas con identificadores que mezclan mayúsculas/minúsculas.

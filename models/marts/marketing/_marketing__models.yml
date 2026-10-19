@@ -12,9 +12,17 @@ models:
       compras: número de pedidos, total gastado, descuentos, productos
       comprados, etc. Incluye un campo `purchase_segment` para segmentación
       directa en campañas de marketing.
+    semantic_model:
+      enabled: true
+      name: user_purchases
+    agg_time_dimension: registered_at
+
     columns:
       - name: user_id
         description: PK del usuario.
+        entity:
+          type: primary
+          name: user
         data_tests:
           - unique
           - not_null
@@ -23,15 +31,92 @@ models:
                 to: ref('dim_users')
                 field: user_id
 
+      - name: first_name
+        description: Nombre del usuario.
+        dimension:
+          type: categorical
+
+      - name: last_name
+        description: Apellido del usuario.
+        dimension:
+          type: categorical
+
+      - name: full_name
+        description: Nombre completo del usuario.
+        dimension:
+          type: categorical
+
       - name: email
         description: Email del usuario.
+        dimension:
+          type: categorical
         data_tests:
           - not_null
 
       - name: is_valid_email_address
         description: Útil para filtrar destinatarios en campañas de email.
+        dimension:
+          type: categorical
         data_tests:
           - not_null
+
+      - name: phone_number
+        description: Teléfono del usuario.
+        dimension:
+          type: categorical
+
+      - name: user_address
+        description: Dirección principal del usuario.
+        dimension:
+          type: categorical
+
+      - name: user_zipcode
+        description: Código postal del usuario.
+        dimension:
+          type: categorical
+
+      - name: user_state
+        description: Estado del usuario.
+        dimension:
+          type: categorical
+
+      - name: user_country
+        description: País del usuario.
+        dimension:
+          type: categorical
+
+      - name: registered_at_utc
+        description: Timestamp UTC del alta del usuario.
+        granularity: day
+        dimension:
+          type: time
+          name: registered_at
+
+      - name: first_order_at_utc
+        description: Timestamp UTC del primer pedido del usuario.
+        granularity: day
+        dimension:
+          type: time
+          name: first_order_at
+
+      - name: last_order_at_utc
+        description: Timestamp UTC del último pedido del usuario.
+        granularity: day
+        dimension:
+          type: time
+          name: last_order_at
+
+      - name: purchase_segment
+        description: >
+          Segmentación derivada para campañas:
+          'never_bought', 'one_purchase', 'two_purchases', 'three_or_more'.
+        dimension:
+          type: categorical
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments: 
+                values: ['never_bought', 'one_purchase', 'two_purchases', 'three_or_more']
 
       - name: total_orders
         description: Número total de pedidos del usuario. 0 si nunca compró.
@@ -42,6 +127,12 @@ models:
         description: Total gastado en USD (incluye envío, antes de descuentos).
         data_tests:
           - not_null
+
+      - name: total_shipping_cost_usd
+        description: Coste total de envío en USD.
+
+      - name: total_discount_usd
+        description: Descuento total aplicado en USD.
 
       - name: total_net_spent_usd
         description: Total gastado neto (descuento aplicado).
@@ -58,12 +149,51 @@ models:
         data_tests:
           - not_null
 
-      - name: purchase_segment
-        description: >
-          Segmentación derivada para campañas:
-          'never_bought', 'one_purchase', 'two_purchases', 'three_or_more'.
-        data_tests:
-          - not_null
-          - accepted_values:
-              arguments: 
-                values: ['never_bought', 'one_purchase', 'two_purchases', 'three_or_more']
+    metrics:
+      - name: total_users
+        description: Número de usuarios en el modelo.
+        type: simple
+        agg: count_distinct
+        expr: user_id
+
+      - name: total_orders
+        description: Número total de pedidos agregados a nivel de usuario.
+        type: simple
+        agg: sum
+        expr: total_orders
+
+      - name: total_spent_usd
+        description: Total gastado en USD.
+        type: simple
+        agg: sum
+        expr: total_spent_usd
+
+      - name: total_shipping_cost_usd
+        description: Total de gastos de envío en USD.
+        type: simple
+        agg: sum
+        expr: total_shipping_cost_usd
+
+      - name: total_discount_usd
+        description: Total de descuentos aplicados en USD.
+        type: simple
+        agg: sum
+        expr: total_discount_usd
+
+      - name: total_net_spent_usd
+        description: Total gastado neto en USD.
+        type: simple
+        agg: sum
+        expr: total_net_spent_usd
+
+      - name: total_products_bought
+        description: Total de unidades compradas.
+        type: simple
+        agg: sum
+        expr: total_products_bought
+
+      - name: total_distinct_products
+        description: Total de productos distintos comprados agregados por usuario.
+        type: simple
+        agg: sum
+        expr: total_distinct_products
