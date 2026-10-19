@@ -83,7 +83,7 @@ models:
     # ------------------------------------------------------------------------
     staging:
       +materialized: view
-      +database: "SERGIOEGUI_{{ env_var('DBT_ENVIRONMENTS', 'FAIL') }}_SILVER_DB"
+      +database: "MESH_{{ env_var('DBT_ENVIRONMENTS', 'FAIL') }}_SILVER_DB"
 
       google_sheets:
         +schema: google_sheets        # Schema dentro de SILVER_DB
@@ -99,8 +99,8 @@ models:
     # ------------------------------------------------------------------------
     marts:
       +materialized: table
-      +database: "SERGIOEGUI_{{ env_var('DBT_ENVIRONMENTS', 'FAIL') }}_GOLD_DB"
-
+      +database: "MESH_{{ env_var('DBT_ENVIRONMENTS', 'FAIL') }}_GOLD_DB"
+      
       core:
         +schema: core
 
@@ -124,7 +124,7 @@ models:
 # CSV: códigos de país, listas de referencia, ...).
 seeds:
   +schema: seed_data
-  +database: "SERGIOEGUI_{{ env_var('DBT_ENVIRONMENTS', 'FAIL') }}_BRONZE_DB"
+  +database: "MESH_{{ env_var('DBT_ENVIRONMENTS', 'FAIL') }}_BRONZE_DB"
 
   repo_demo:
     country_codes:
@@ -142,7 +142,7 @@ seeds:
 # pierde su razón de ser).
 snapshots:
   +transient: false
-  +target_database: "SERGIOEGUI_{{ env_var('DBT_ENVIRONMENTS', 'FAIL') }}_SILVER_DB"
+  +target_database: "MESH_{{ env_var('DBT_ENVIRONMENTS', 'FAIL') }}_SILVER_DB"
   +target_schema: snapshots
 
 # ============================================================================
